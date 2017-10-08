@@ -190,6 +190,15 @@ class MigrationsLoader
         $bundles = $this->getBundleList();
         foreach ($bundles as $bundleName => $bundle) {
             $bundlePath          = $bundle->getPath();
+
+            // Load bundle config.yml
+            $bundleConfigPath = str_replace(
+                '/',
+                DIRECTORY_SEPARATOR,
+                $bundlePath . '/' . 'config.yml'
+            );
+            MigrationsConfig::load($bundleConfigPath);
+
             $bundleMigrationPath = str_replace(
                 '/',
                 DIRECTORY_SEPARATOR,
