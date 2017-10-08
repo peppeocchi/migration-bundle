@@ -3,17 +3,16 @@
 namespace Okvpn\Bundle\MigrationBundle\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
+use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
 
 class CreateMigrationTableMigration implements Migration
 {
-    const MIGRATION_TABLE = 'okvpn_migrations';
-
     /**
      * @inheritdoc
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->createTable(self::MIGRATION_TABLE);
+        $table = $schema->createTable(MigrationsConfig::get('table'));
         $table->addColumn('id', 'integer', ['notnull' => true, 'autoincrement' => true]);
         $table->addColumn('bundle', 'string', ['notnull' => true, 'length' => 250]);
         $table->addColumn('version', 'string', ['notnull' => true, 'length' => 250]);

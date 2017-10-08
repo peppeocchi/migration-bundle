@@ -5,6 +5,7 @@ namespace Okvpn\Bundle\MigrationBundle\Tests\Unit\Migration;
 use Doctrine\DBAL\Schema\Schema;
 use Okvpn\Bundle\MigrationBundle\Migration\CreateMigrationTableMigration;
 use Okvpn\Bundle\MigrationBundle\Migration\QueryBag;
+use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
 
 class CreateMigrationTableMigrationTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +19,7 @@ class CreateMigrationTableMigrationTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($queryBag->getPreQueries());
         $this->assertEmpty($queryBag->getPostQueries());
 
-        $table = $schema->getTable(CreateMigrationTableMigration::MIGRATION_TABLE);
+        $table = $schema->getTable(MigrationsConfig::get('table'));
         $this->assertTrue($table->hasColumn('id'));
         $this->assertTrue($table->hasColumn('bundle'));
         $this->assertTrue($table->hasColumn('version'));

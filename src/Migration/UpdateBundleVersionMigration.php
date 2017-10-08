@@ -3,6 +3,7 @@
 namespace Okvpn\Bundle\MigrationBundle\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
+use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
 
 class UpdateBundleVersionMigration implements Migration, FailIndependentMigration
 {
@@ -28,7 +29,7 @@ class UpdateBundleVersionMigration implements Migration, FailIndependentMigratio
             foreach ($bundleVersions as $bundleName => $bundleVersion) {
                 $sql = sprintf(
                     "INSERT INTO %s (bundle, version, loaded_at) VALUES ('%s', '%s', '%s')",
-                    CreateMigrationTableMigration::MIGRATION_TABLE,
+                    MigrationsConfig::get('table'),
                     $bundleName,
                     $bundleVersion,
                     $date->format('Y-m-d H:i:s')

@@ -1,0 +1,3 @@
+okvpn_migration:
+    migrations_path: 'Migrations/Schema'
+    migrations_table: 'okvpn_migrations'

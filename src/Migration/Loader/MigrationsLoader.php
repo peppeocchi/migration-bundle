@@ -20,13 +20,13 @@ use Okvpn\Bundle\MigrationBundle\Event\MigrationEvents;
 use Okvpn\Bundle\MigrationBundle\Event\PostMigrationEvent;
 use Okvpn\Bundle\MigrationBundle\Event\PreMigrationEvent;
 
+use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
+
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class MigrationsLoader
 {
-    const MIGRATIONS_PATH = 'Migrations/Schema';
-
     /**
      * @var KernelInterface
      *
@@ -193,7 +193,7 @@ class MigrationsLoader
             $bundleMigrationPath = str_replace(
                 '/',
                 DIRECTORY_SEPARATOR,
-                $bundlePath . '/' . self::MIGRATIONS_PATH
+                $bundlePath . '/' . MigrationsConfig::get('path')
             );
 
             if (is_dir($bundleMigrationPath)) {

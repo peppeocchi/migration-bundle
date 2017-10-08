@@ -4,6 +4,7 @@ namespace Okvpn\Bundle\MigrationBundle\EventListener;
 
 use Okvpn\Bundle\MigrationBundle\Event\PreMigrationEvent;
 use Okvpn\Bundle\MigrationBundle\Migration\CreateMigrationTableMigration;
+use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
 
 class PreUpMigrationListener
 {
@@ -12,12 +13,13 @@ class PreUpMigrationListener
      */
     public function onPreUp(PreMigrationEvent $event)
     {
-        if ($event->isTableExist(CreateMigrationTableMigration::MIGRATION_TABLE)) {
+        $table = MigrationsConfig::get('table');
+
+        if ($event->isTableExist($table)) {
             $data = $event->getData(
                 sprintf(
                     'select * from %s where id in (select max(id) from %s group by bundle)',
-                    CreateMigrationTableMigration::MIGRATION_TABLE,
-                    CreateMigrationTableMigration::MIGRATION_TABLE
+                    $table, $table
                 )
             );
             foreach ($data as $val) {
