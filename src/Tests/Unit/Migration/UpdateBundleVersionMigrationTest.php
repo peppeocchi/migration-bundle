@@ -6,7 +6,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Okvpn\Bundle\MigrationBundle\Migration\MigrationState;
 use Okvpn\Bundle\MigrationBundle\Migration\QueryBag;
 use Okvpn\Bundle\MigrationBundle\Migration\UpdateBundleVersionMigration;
-use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
 
 class UpdateBundleVersionMigrationTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +22,7 @@ class UpdateBundleVersionMigrationTest extends \PHPUnit_Framework_TestCase
         foreach ($expectedUpdates as $bundleName => $version) {
             $assertQueries[] = sprintf(
                 "INSERT INTO %s (bundle, version, loaded_at) VALUES ('%s', '%s',",
-                MigrationsConfig::get('table'),
+                $this->container->getParameter('okvpn_migration.migrations_table'),
                 $bundleName,
                 $version
             );

@@ -3,10 +3,13 @@
 namespace Okvpn\Bundle\MigrationBundle\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
-use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class UpdateBundleVersionMigration implements Migration, FailIndependentMigration
+class UpdateBundleVersionMigration implements Migration, FailIndependentMigration, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /** @var MigrationState[] */
     protected $migrations;
 
@@ -29,7 +32,7 @@ class UpdateBundleVersionMigration implements Migration, FailIndependentMigratio
             foreach ($bundleVersions as $bundleName => $bundleVersion) {
                 $sql = sprintf(
                     "INSERT INTO %s (bundle, version, loaded_at) VALUES ('%s', '%s', '%s')",
-                    MigrationsConfig::get('table'),
+                    $this->container->getParameter('okvpn_migration.migrations_table'),
                     $bundleName,
                     $bundleVersion,
                     $date->format('Y-m-d H:i:s')

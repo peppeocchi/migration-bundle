@@ -4,16 +4,23 @@ namespace Okvpn\Bundle\MigrationBundle\EventListener;
 
 use Okvpn\Bundle\MigrationBundle\Event\PreMigrationEvent;
 use Okvpn\Bundle\MigrationBundle\Migration\CreateMigrationTableMigration;
-use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PreUpMigrationListener
 {
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param PreMigrationEvent $event
      */
     public function onPreUp(PreMigrationEvent $event)
     {
-        $table = MigrationsConfig::get('table');
+        $table = $this->container->getParameter('okvpn_migration.migrations_table');
 
         if ($event->isTableExist($table)) {
             $data = $event->getData(
@@ -26,7 +33,7 @@ class PreUpMigrationListener
                 $event->setLoadedVersion($val['bundle'], $val['version']);
             }
         } else {
-            $event->addMigration(new CreateMigrationTableMigration());
+            $event->addMigration(new CreateMigrationTableMigration($this->container->getParameter('okvpn_migration.migrations_table')));
         }
     }
 }

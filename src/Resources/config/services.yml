@@ -1,3 +1,7 @@
+parameters:
+    okvpn_migration.migrations_table: 'okvpn_migrations'
+    okvpn_migration.migrations_path: 'Migrations/Schema'
+
 services:
     okvpn_migration.db_id_name_generator:
         class: Okvpn\Bundle\MigrationBundle\Tools\DbIdentifierNameGenerator

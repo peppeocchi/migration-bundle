@@ -20,8 +20,6 @@ use Okvpn\Bundle\MigrationBundle\Event\MigrationEvents;
 use Okvpn\Bundle\MigrationBundle\Event\PostMigrationEvent;
 use Okvpn\Bundle\MigrationBundle\Event\PreMigrationEvent;
 
-use Okvpn\Bundle\MigrationBundle\Migration\MigrationsConfig;
-
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
@@ -190,19 +188,10 @@ class MigrationsLoader
         $bundles = $this->getBundleList();
         foreach ($bundles as $bundleName => $bundle) {
             $bundlePath          = $bundle->getPath();
-
-            // Load bundle config.yml
-            $bundleConfigPath = str_replace(
-                '/',
-                DIRECTORY_SEPARATOR,
-                $bundlePath . '/' . 'config.yml'
-            );
-            MigrationsConfig::load($bundleConfigPath);
-
             $bundleMigrationPath = str_replace(
                 '/',
                 DIRECTORY_SEPARATOR,
-                $bundlePath . '/' . MigrationsConfig::get('path')
+                $bundlePath . '/' . $this->container->getParameter('okvpn_migration.migrations_path')
             );
 
             if (is_dir($bundleMigrationPath)) {
